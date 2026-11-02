@@ -210,4 +210,64 @@
     </div>
     <div class="input-field-box">
       <div class="input-label">Person 2 Name</div>
-      <input type="text" id="person2" class="charmi-input" placeholder="Enter
+      <input type="text" id="person2" class="charmi-input" placeholder="Enter name (e.g. Sarah)">
+    </div>
+  </div>
+
+  <!-- Edible Array Objects -->
+  <div class="form-section">
+    <div class="section-title">Edible Array Objects</div>
+    <div class="input-field-box">
+      <div class="input-label">Animal Name</div>
+      <input type="text" id="animalInput" class="charmi-input" placeholder="Enter animal (e.g. Chicken)">
+    </div>
+    <div class="input-field-box">
+      <div class="input-label">Apple Variety</div>
+      <input type="text" id="appleInput" class="charmi-input" placeholder="Enter apple type (e.g. Red Apple)">
+    </div>
+    <div class="input-field-box">
+      <div class="input-label">Orange Variety</div>
+      <input type="text" id="orangeInput" class="charmi-input" placeholder="Enter orange type (e.g. Navel Orange)">
+    </div>
+  </div>
+
+  <!-- App Button -->
+  <button class="btn-action" onclick="runEdibleProgram()">
+    <span>🍽️</span> Serve & Taste Menu
+  </button>
+
+  <!-- Output Results -->
+  <div class="cards-stack">
+    <div class="stat-card card-lime">
+      <div class="card-tag">Item 1 (Animal Class)</div>
+      <div id="out1" class="card-output-text">Awaiting input...</div>
+    </div>
+    <div class="stat-card card-pink">
+      <div class="card-tag">Item 2 (Apple Class)</div>
+      <div id="out2" class="card-output-text">Awaiting input...</div>
+    </div>
+    <div class="stat-card card-blue">
+      <div class="card-tag">Item 3 (Orange Class)</div>
+      <div id="out3" class="card-output-text">Awaiting input...</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function runEdibleProgram() {
+  const p1 = document.getElementById("person1").value.trim() || "Person 1";
+  const p2 = document.getElementById("person2").value.trim() || "Person 2";
+
+  const animal = document.getElementById("animalInput").value.trim() || "Animal";
+  const apple = document.getElementById("appleInput").value.trim() || "Apple";
+  const orange = document.getElementById("orangeInput").value.trim() || "Orange";
+
+  document.getElementById("out1").textContent = `${p1} is eating ${animal}. ${animal} needs to be cooked first before eating.`;
+  document.getElementById("out2").textContent = `${p2} is eating ${apple}. ${apple} can make apple pie.`;
+  document.getElementById("out3").textContent = `${p2} is eating ${orange}. ${orange} can make orange butter cake.`;
+}
+</script>
+
+</body>
+</html>

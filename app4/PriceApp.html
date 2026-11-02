@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Affordability & Price App</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@700&display=swap');
+
+    :root {
+      --bg-page: #f4f5f9;
+      --card-white: #ffffff;
+      --lime-card: #d9f99d;
+      --pink-card: #fbcfe8;
+      --blue-card: #bfdbfe;
+      --dark-btn: #1e293b;
+      --text-dark: #0f172a;
+      --text-muted: #64748b;
+      --border-soft: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-dark);
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 540px;
+      background-color: var(--card-white);
+      border-radius: 32px;
+      padding: 28px;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Header */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .header-title-box {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .header-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+    }
+
+    .header-sub {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .badge-pill {
+      background: #fef08a;
+      color: #713f12;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    /* Input Sections */
+    .form-section {
+      background: #f8fafc;
+      border-radius: 22px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    .input-field-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .charmi-input {
+      width: 100%;
+      background: #ffffff;
+      border: 2px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .charmi-input:focus {
+      border-color: var(--dark-btn);
+    }
+
+    /* App Button */
+    .btn-action {
+      width: 100%;
+      background: var(--dark-btn);
+      color: #ffffff;
+      border: none;
+      border-radius: 18px;
+      padding: 16px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 20px -5px rgba(30, 41, 59, 0.2);
+      transition: transform 0.1s ease, background-color 0.2s ease;
+    }
+
+    .btn-action:hover {
+      background-color: #0f172a;
+    }
+
+    .btn-action:active { 
+      transform: scale(0.98); 
+    }
+
+    /* Results Cards Stack */
+    .cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .stat-card {
+      border-radius: 24px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-pink { background-color: var(--pink-card); }
+    .card-blue { background-color: var(--blue-card); }
+    .card-lime { background-color: var(--lime-card); }
+
+    .card-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #1e293b;
+      text-transform: uppercase;
+    }
+
+    .card-output-text {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+  
+  <div class="header-row">
+    <div class="header-title-box">
+      <div class="header-title">Price & Affordability</div>
+      <div class="header-sub">Evaluates purchase eligibility via Price Interface</div>
+    </div>
+    <div class="badge-pill">Price App</div>
+  </div>
+
+  <!-- Customers Section -->
+  <div class="form-section">
+    <div class="section-title">Customer Salaries</div>
+    <div class="grid-2">
+      <div class="input-field-box">
+        <div class="input-label">Customer 1 (Sally)</div>
+        <input type="number" id="c1Salary" class="charmi-input" value="3000">
+      </div>
+      <div class="input-field-box">
+        <div class="input-label">Customer 2 (Aaron)</div>
+        <input type="number" id="c2Salary" class="charmi-input" value="8000">
+      </div>
+    </div>
+    <div class="input-field-box">
+      <div class="input-label">Customer 3 (Simon)</div>
+      <input type="number" id="c3Salary" class="charmi-input" value="10000">
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <div class="form-section">
+    <div class="section-title">Products & Pricing</div>
+    <div class="grid-2">
+      <div class="input-field-box">
+        <div class="input-label">SmartPhone Model</div>
+        <input type="text" id="spName" class="charmi-input" value="Iphone 14 ProMax">
+      </div>
+      <div class="input-field-box">
+        <div class="input-label">Laptop Model</div>
+        <input type="text" id="lpName" class="charmi-input" value="Lenovo Yoga">
+      </div>
+    </div>
+    <div class="input-field-box">
+      <div class="input-label">Car Brand</div>
+      <input type="text" id="carBrand" class="charmi-input" value="BMW">
+    </div>
+  </div>
+
+  <!-- Action Button -->
+  <button class="btn-action" onclick="runPriceApp()">
+    <span>💳</span> Check Affordability
+  </button>
+
+  <!-- Output Results -->
+  <div class="cards-stack">
+    <div class="stat-card card-pink">
+      <div class="card-tag">SmartPhone Check (Sally)</div>
+      <div id="out1" class="card-output-text">
+        The product is Iphone 14 ProMax.<br>
+        The customer's name is Sally with salary RM3000.0 cannot buy this product. The product price is more than your salary.
+      </div>
+    </div>
+
+    <div class="stat-card card-blue">
+      <div class="card-tag">Laptop Check (Aaron)</div>
+      <div id="out2" class="card-output-text">
+        The product is Lenovo Yoga.<br>
+        The customer's name is Aaron with salary RM8000.0 can buy this product. Your salary is higher than the price's product.
+      </div>
+    </div>
+
+    <div class="stat-card card-lime">
+      <div class="card-tag">Car Check (Simon)</div>
+      <div id="out3" class="card-output-text">
+        The car brand is BMW with price RM200000.0.<br>
+        The customer's name is Simon with salary RM10000.0 can buy this car. Your salary is higher than the price's car.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function runPriceApp() {
+  const c1Sal = parseFloat(document.getElementById("c1Salary").value) || 0;
+  const c2Sal = parseFloat(document.getElementById("c2Salary").value) || 0;
+  const c3Sal = parseFloat(document.getElementById("c3Salary").value) || 0;
+
+  const spName = document.getElementById("spName").value || "SmartPhone";
+  const lpName = document.getElementById("lpName").value || "Laptop";
+  const carBrand = document.getElementById("carBrand").value || "Car";
+
+  // 1. SmartPhone check for Sally (Salary threshold > 4000)
+  let out1Text = `The product is ${spName}.<br>`;
+  if (c1Sal > 4000) {
+    out1Text += `The customer's name is Sally with salary RM${c1Sal.toFixed(1)} can buy this product. Your salary is higher than the price's product.`;
+  } else {
+    out1Text += `The customer's name is Sally with salary RM${c1Sal.toFixed(1)} cannot buy this product. The product price is more than your salary.`;
+  }
+
+  // 2. Laptop check for Aaron (Salary threshold > 4000)
+  let out2Text = `The product is ${lpName}.<br>`;
+  if (c2Sal > 4000) {
+    out2Text += `The customer's name is Aaron with salary RM${c2Sal.toFixed(1)} can buy this product. Your salary is higher than the price's product.`;
+  } else {
+    out2Text += `The customer's name is Aaron with salary RM${c2Sal.toFixed(1)} cannot buy this product. The product price is more than your salary.`;
+  }
+
+  // 3. Car check for Simon (Salary threshold > 8000)
+  let out3Text = `The car brand is ${carBrand} with price RM200000.0.<br>`;
+  if (c3Sal > 8000) {
+    out3Text += `The customer's name is Simon with salary RM${c3Sal.toFixed(1)} can buy this car. Your salary is higher than the price's car.`;
+  } else {
+    out3Text += `The customer's name is Simon with salary RM${c3Sal.toFixed(1)} cannot buy this car.`;
+  }
+
+  document.getElementById("out1").innerHTML = out1Text;
+  document.getElementById("out2").innerHTML = out2Text;
+  document.getElementById("out3").innerHTML = out3Text;
+}
+</script>
+
+</body>
+</html>

@@ -6,13 +6,11 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-// a) Interface Measurable
 interface Measurable {
     double getMeasure();
     String getName();
 }
 
-// b) BankAccount Class
 class BankAccount implements Measurable {
     private int accNumber;
     private double balance;
@@ -43,7 +41,6 @@ class BankAccount implements Measurable {
     }
 }
 
-// c) Coin Class
 class Coin implements Measurable {
     private double value;
     private String name;
@@ -68,7 +65,30 @@ class Coin implements Measurable {
     }
 }
 
-// d) DataSet Class
+class Student implements Measurable {
+    private String name;
+    private double height;
+
+    public Student(String name, double height) {
+        this.name = name;
+        this.height = height;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    @Override
+    public double getMeasure() {
+        return height;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+}
+
 class DataSet implements Measurable {
     private double sum;
     private Measurable max;
@@ -113,34 +133,8 @@ class DataSet implements Measurable {
     }
 }
 
-// e) Student Class
-class Student implements Measurable {
-    private String name;
-    private double height;
-
-    public Student(String name, double height) {
-        this.name = name;
-        this.height = height;
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    @Override
-    public double getMeasure() {
-        return height;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-}
-
 public class DataSetApp extends JFrame {
 
-    // Palette setup based on UI Mockup
     private static final Color BG_DARK = new Color(245, 247, 250);
     private static final Color CARD_BG = Color.WHITE;
     private static final Color NAVY_DARK = new Color(28, 37, 54);
@@ -171,17 +165,14 @@ public class DataSetApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        // Container Panel
         JPanel background = new JPanel(new GridBagLayout());
         background.setBackground(BG_DARK);
 
-        // Rounded Card Window
         RoundedPanel card = new RoundedPanel(28, CARD_BG);
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBorder(new EmptyBorder(32, 32, 32, 32));
         card.setPreferredSize(new Dimension(480, 620));
 
-        // Top Header
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
         JLabel title = new JLabel("DATASET JAVA LAB");
@@ -196,7 +187,6 @@ public class DataSetApp extends JFrame {
         card.add(header);
         card.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Domain Selector
         JLabel lblSelect = new JLabel("SELECT DATASET DOMAIN");
         lblSelect.setFont(new Font("SansSerif", Font.BOLD, 11));
         lblSelect.setForeground(new Color(130, 140, 155));
@@ -215,7 +205,6 @@ public class DataSetApp extends JFrame {
         card.add(domainSelector);
         card.add(Box.createRigidArea(new Dimension(0, 18)));
 
-        // Dynamic Form Box
         RoundedPanel formBox = new RoundedPanel(18, new Color(248, 249, 252));
         formBox.setLayout(new BoxLayout(formBox, BoxLayout.Y_AXIS));
         formBox.setBorder(new EmptyBorder(16, 16, 16, 16));
@@ -257,19 +246,16 @@ public class DataSetApp extends JFrame {
         card.add(formBox);
         card.add(Box.createRigidArea(new Dimension(0, 16)));
 
-        // Metric Card 1: Average
         lblAvgValue = new JLabel("RM 0.00");
         lblAvgSub = new JLabel("Average Balance");
         card.add(buildMetricCard("Average Measure", lblAvgSub, lblAvgValue, METRIC_GREEN_BG));
         card.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // Metric Card 2: Highest
         lblMaxValue = new JLabel("RM 0.00");
         lblMaxSub = new JLabel("No records yet");
         card.add(buildMetricCard("Highest Record", lblMaxSub, lblMaxValue, METRIC_PINK_BG));
         card.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // Metric Card 3: Count
         lblCountValue = new JLabel("0");
         JLabel lblCountSub = new JLabel("Items in Dataset");
         card.add(buildMetricCard("Total Elements", lblCountSub, lblCountValue, METRIC_BLUE_BG));
@@ -281,7 +267,6 @@ public class DataSetApp extends JFrame {
         setSize(540, 700);
         setLocationRelativeTo(null);
 
-        // Load Default Sample State
         loadDefaults();
     }
 
@@ -404,7 +389,6 @@ public class DataSetApp extends JFrame {
         btn.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
     }
 
-    // Helper Rounded UI Components
     static class RoundedPanel extends JPanel {
         private int radius;
         private Color bgColor;
@@ -428,12 +412,10 @@ public class DataSetApp extends JFrame {
 
     static class RoundedLabel extends JLabel {
         private Color bgColor;
-        private Color fgColor;
 
         RoundedLabel(String text, Color bg, Color fg) {
             super(text);
             this.bgColor = bg;
-            this.fgColor = fg;
             setForeground(fg);
             setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
             setOpaque(false);

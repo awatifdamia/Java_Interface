@@ -1,43 +1,150 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.text.DecimalFormat;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class PriceGuiApp extends JFrame {
+interface Price {
+    void getPrice(Customer c);
+}
 
-    // Customer 1 Fields (SmartPhone)
+class Customer {
+    private String nameCust;
+    private double salary;
+
+    public Customer(String nameCust, double salary) {
+        this.nameCust = nameCust;
+        this.salary = salary;
+    }
+
+    public String getName() {
+        return nameCust;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+}
+
+abstract class Product implements Price {
+    private String type;
+    protected Customer buy;
+
+    public Product(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        return "The product is ";
+    }
+
+    @Override
+    public void getPrice(Customer c) {
+        this.buy = c;
+        if (c.getSalary() > 4000) {
+            System.out.println("The customer's name is " + c.getName() + " with salary RM" + c.getSalary() + " can buy this product.");
+            System.out.println("Your salary is higher than the price's product.");
+        } else {
+            System.out.println("The customer's name is " + c.getName() + " with salary RM" + c.getSalary() + " cannot buy this product.");
+            System.out.println("The product price is more than your salary.");
+        }
+    }
+}
+
+class SmartPhoneProduct extends Product {
+    private String nameSP;
+    private double priceSP;
+
+    public SmartPhoneProduct(String type, String nameSP, double priceSP) {
+        super(type);
+        this.nameSP = nameSP;
+        this.priceSP = priceSP;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + nameSP + ".";
+    }
+
+    @Override
+    public void getPrice(Customer c) {
+        System.out.println(toString());
+        super.getPrice(c);
+    }
+}
+
+class Laptop extends Product {
+    private String nameL;
+    private double priceL;
+
+    public Laptop(String type, String nameL, double priceL) {
+        super(type);
+        this.nameL = nameL;
+        this.priceL = priceL;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + nameL + ".";
+    }
+
+    @Override
+    public void getPrice(Customer c) {
+        System.out.println(toString());
+        super.getPrice(c);
+    }
+}
+
+class Car implements Price {
+    private String brand;
+    private double priceCar;
+    private Customer buy;
+
+    public Car(String brand, double priceCar) {
+        this.brand = brand;
+        this.priceCar = priceCar;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    @Override
+    public String toString() {
+        return "The car brand is " + brand + " with price RM" + priceCar + ".";
+    }
+
+    @Override
+    public void getPrice(Customer c) {
+        this.buy = c;
+        System.out.println(toString());
+        if (c.getSalary() > 8000) {
+            System.out.println("The customer's name is " + c.getName() + " with salary RM" + c.getSalary() + " can buy this car. Your salary is higher than the price's car.");
+        } else {
+            System.out.println("The customer's name is " + c.getName() + " with salary RM" + c.getSalary() + " cannot buy this car. The car price is more than your salary.");
+        }
+    }
+}
+
+public class PriceApp extends JFrame {
+
     private final JTextField txtC1Name = new JTextField("Sally");
     private final JTextField txtC1Salary = new JTextField("3000.00");
     private final JTextField txtSpName = new JTextField("Iphone 14 ProMax");
 
-    // Customer 2 Fields (Laptop)
     private final JTextField txtC2Name = new JTextField("Aaron");
     private final JTextField txtC2Salary = new JTextField("8000.00");
     private final JTextField txtLpName = new JTextField("Lenovo Yoga");
 
-    // Customer 3 Fields (Car)
     private final JTextField txtC3Name = new JTextField("Simon");
     private final JTextField txtC3Salary = new JTextField("10000.00");
     private final JTextField txtCarBrand = new JTextField("BMW");
 
-    // Display Labels
     private final JLabel lblTag1 = new JLabel("SMARTPHONE CHECK");
     private final JLabel lblOut1 = new JLabel("Awaiting check...");
 
@@ -49,7 +156,7 @@ public class PriceGuiApp extends JFrame {
 
     private final DecimalFormat df = new DecimalFormat("0.0");
 
-    public PriceGuiApp() {
+    public PriceApp() {
         super("Price & Affordability App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -62,7 +169,6 @@ public class PriceGuiApp extends JFrame {
         card.setBorder(new EmptyBorder(24, 24, 24, 24));
         card.setPreferredSize(new Dimension(520, 760));
 
-        // Header
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
 
@@ -89,19 +195,15 @@ public class PriceGuiApp extends JFrame {
         card.add(header);
         card.add(Box.createRigidArea(new Dimension(0, 14)));
 
-        // Customer 1 Section
         card.add(buildFormSection("Customer 1 (SmartPhone Check)", txtC1Name, txtC1Salary, "SmartPhone Model", txtSpName));
         card.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // Customer 2 Section
         card.add(buildFormSection("Customer 2 (Laptop Check)", txtC2Name, txtC2Salary, "Laptop Model", txtLpName));
         card.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // Customer 3 Section
         card.add(buildFormSection("Customer 3 (Car Check)", txtC3Name, txtC3Salary, "Car Brand", txtCarBrand));
         card.add(Box.createRigidArea(new Dimension(0, 14)));
 
-        // Action Button
         JButton btnRun = new JButton("💳 Check Affordability");
         btnRun.setFont(new Font("SansSerif", Font.BOLD, 15));
         btnRun.setForeground(Color.WHITE);
@@ -113,7 +215,6 @@ public class PriceGuiApp extends JFrame {
         card.add(btnRun);
         card.add(Box.createRigidArea(new Dimension(0, 14)));
 
-        // Results Stack
         card.add(buildResultCard(lblTag1, lblOut1, new Color(251, 207, 232)));
         card.add(Box.createRigidArea(new Dimension(0, 8)));
         card.add(buildResultCard(lblTag2, lblOut2, new Color(191, 219, 254)));
@@ -203,7 +304,6 @@ public class PriceGuiApp extends JFrame {
         lblTag2.setText("LAPTOP CHECK (" + c2Name.toUpperCase() + ")");
         lblTag3.setText("CAR CHECK (" + c3Name.toUpperCase() + ")");
 
-        // 1. SmartPhone Check
         String out1 = "<html>The product is " + spName + ".<br>";
         if (c1Sal > 4000) {
             out1 += "The customer's name is " + c1Name + " with salary RM" + df.format(c1Sal) + " can buy this product. Your salary is higher than the price's product.</html>";
@@ -211,7 +311,6 @@ public class PriceGuiApp extends JFrame {
             out1 += "The customer's name is " + c1Name + " with salary RM" + df.format(c1Sal) + " cannot buy this product. The product price is more than your salary.</html>";
         }
 
-        // 2. Laptop Check
         String out2 = "<html>The product is " + lpName + ".<br>";
         if (c2Sal > 4000) {
             out2 += "The customer's name is " + c2Name + " with salary RM" + df.format(c2Sal) + " can buy this product. Your salary is higher than the price's product.</html>";
@@ -219,7 +318,6 @@ public class PriceGuiApp extends JFrame {
             out2 += "The customer's name is " + c2Name + " with salary RM" + df.format(c2Sal) + " cannot buy this product. The product price is more than your salary.</html>";
         }
 
-        // 3. Car Check
         String out3 = "<html>The car brand is " + carBrand + " with price RM200000.0.<br>";
         if (c3Sal > 8000) {
             out3 += "The customer's name is " + c3Name + " with salary RM" + df.format(c3Sal) + " can buy this car. Your salary is higher than the price's car.</html>";
@@ -284,6 +382,6 @@ public class PriceGuiApp extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new PriceGuiApp().setVisible(true));
+        SwingUtilities.invokeLater(() -> new PriceApp().setVisible(true));
     }
 }

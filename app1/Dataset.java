@@ -138,10 +138,6 @@ class Student implements Measurable {
     }
 }
 
-// =====================================================================
-// GUI Application matching custom design
-// =====================================================================
-
 public class DataSetApp extends JFrame {
 
     // Palette setup based on UI Mockup

@@ -3,7 +3,74 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class EdibleGuiApp extends JFrame {
+interface Edible {
+    String howToEat();
+}
+
+class Animal implements Edible {
+    private String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String howToEat() {
+        return name + ". " + name + " needs to be cooked first before eating.";
+    }
+}
+
+abstract class Fruit implements Edible {
+    protected String name;
+
+    public Fruit(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+class Orange extends Fruit {
+    public Orange(String name) {
+        super(name);
+    }
+
+    @Override
+    public String howToEat() {
+        return name + ". " + name + " can make orange butter cake.";
+    }
+}
+
+class Apple extends Fruit {
+    public Apple(String name) {
+        super(name);
+    }
+
+    @Override
+    public String howToEat() {
+        return name + ". " + name + " can make apple pie.";
+    }
+}
+
+class Person {
+    private String name;
+
+    public Person(String name) {
+        this.name = name;
+    }
+
+    public String eating(Edible eat) {
+        return name + " is eating " + eat.howToEat();
+    }
+}
+
+public class EdibleApp extends JFrame {
 
     private final JTextField txtPerson1 = new JTextField("Ali");
     private final JTextField txtPerson2 = new JTextField("Sarah");
@@ -15,7 +82,7 @@ public class EdibleGuiApp extends JFrame {
     private final JLabel lblOut2 = new JLabel("Awaiting input...");
     private final JLabel lblOut3 = new JLabel("Awaiting input...");
 
-    public EdibleGuiApp() {
+    public EdibleApp() {
         super("Edible Food & Animals App");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
@@ -23,13 +90,11 @@ public class EdibleGuiApp extends JFrame {
         JPanel root = new JPanel(new GridBagLayout());
         root.setBackground(new Color(244, 245, 249));
 
-        // App Card Container
         RoundedPanel card = new RoundedPanel(32, Color.WHITE);
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBorder(new EmptyBorder(28, 28, 28, 28));
         card.setPreferredSize(new Dimension(480, 640));
 
-        // Header
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
         
@@ -56,15 +121,12 @@ public class EdibleGuiApp extends JFrame {
         card.add(header);
         card.add(Box.createRigidArea(new Dimension(0, 16)));
 
-        // People Section
         card.add(buildFormSection("People Setup", new String[]{"Person 1 Name", "Person 2 Name"}, new JTextField[]{txtPerson1, txtPerson2}));
         card.add(Box.createRigidArea(new Dimension(0, 12)));
 
-        // Items Section
         card.add(buildFormSection("Edible Array Objects", new String[]{"Animal Name", "Apple Variety", "Orange Variety"}, new JTextField[]{txtAnimal, txtApple, txtOrange}));
         card.add(Box.createRigidArea(new Dimension(0, 16)));
 
-        // Action Button
         JButton btnRun = new JButton("🍽️ Serve & Taste Menu");
         btnRun.setFont(new Font("SansSerif", Font.BOLD, 15));
         btnRun.setForeground(Color.WHITE);
@@ -76,7 +138,6 @@ public class EdibleGuiApp extends JFrame {
         card.add(btnRun);
         card.add(Box.createRigidArea(new Dimension(0, 16)));
 
-        // Results Stack
         card.add(buildResultCard("Item 1 (Animal Class)", lblOut1, new Color(217, 249, 157)));
         card.add(Box.createRigidArea(new Dimension(0, 10)));
         card.add(buildResultCard("Item 2 (Apple Class)", lblOut2, new Color(251, 207, 232)));
@@ -199,6 +260,6 @@ public class EdibleGuiApp extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new EdibleGuiApp().setVisible(true));
+        SwingUtilities.invokeLater(() -> new EdibleApp().setVisible(true));
     }
 }
